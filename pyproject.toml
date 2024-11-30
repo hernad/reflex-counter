@@ -11,7 +11,7 @@ reflex_counter = "reflex_counter_backend.main:start"
 [tool.poetry.dependencies]
 python = "^3.12"
 reflex = "*"
-fastapi = {extras = ["uvicorn"], version = "^0.115.5"}
+fastapi = "*"
 
 [build-system]
 requires = ["poetry-core"]
