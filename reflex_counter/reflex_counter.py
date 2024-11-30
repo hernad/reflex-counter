@@ -56,4 +56,4 @@ def index():
 
 
 app = rx.App()
-app.add_page(index, title="Counter")
+app.add_page(index, title="reflex-counter")
