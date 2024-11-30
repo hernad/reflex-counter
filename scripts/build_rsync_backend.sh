@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 rm -rf backend
+rm reflex-counter-backend.zip
 reflex_counter export --backend-only
 mkdir backend
 cd backend
 unzip ../backend.zip
+rm -rf scripts
 cd ..
 
-rm reflex-counter-backend.zip
 zip -r reflex-counter-backend.zip backend
 rm -rf backend
 
