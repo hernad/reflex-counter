@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "reflex-counter-backend"
-version = "1.0.2"
+name = "reflex-counter"
+version = "1.0.6"
 description = ""
 authors = ["Ernad Husremovic <hernad@bring.out.ba>"]
 readme = "README.md"
 
 [tool.poetry.scripts]
-reflex_counter = "reflex_counter_backend.main:start"
+reflex_counter = "reflex_counter.main:start"
 
 [tool.poetry.dependencies]
 python = "^3.12"
