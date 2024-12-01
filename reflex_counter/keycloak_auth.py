@@ -3,15 +3,27 @@ import json
 import os
 import time
 
+# https://python-keycloak.readthedocs.io/en/latest/modules/openid_client.html#configure-client-openid
+
 #from google.auth.transport import requests
 #from google.oauth2.id_token import verify_oauth2_token
+
+from keycloak import KeycloakOpenID
+
+
+CLIENT_SECRET = os.environ.get("KEYCLOAK_CLIENT_SECRET", "")
+
+# Configure client
+# For versions older than 18 /auth/ must be added at the end of the server_url.
+keycloak_openid = KeycloakOpenID(server_url="http://keycloak.cloud.out.ba/",
+                                 client_id="fastapi",
+                                 realm_name="bringout",
+                                 client_secret_key=CLIENT_SECRET)
 
 import reflex as rx
 
 from .react_keycloak_auth import KeycloakAuthProvider, KeycloakLogin
 from .reflex_counter import app
-
-CLIENT_ID = os.environ.get("KEYCLOAK_CLIENT_ID", "")
 
 class State(rx.State):
     id_token_json: str = rx.LocalStorage()
@@ -22,17 +34,21 @@ class State(rx.State):
     @rx.cached_var
     def tokeninfo(self) -> dict[str, str]:
         try:
-            return verify_oauth2_token(
-                json.loads(self.id_token_json)["credential"],
-                requests.Request(),
-                CLIENT_ID,
-            )
+            token = keycloak_openid.token("user", "password", totp="012345")
+            userinfo = keycloak_openid.userinfo(token['access_token'])
+            token_info = keycloak_openid.introspect(token['access_token'])
+            #return verify_oauth2_token(
+            #    json.loads(self.id_token_json)["credential"],
+            #    requests.Request(),
+            #    CLIENT_ID,
+            #)
         except Exception as exc:
             if self.id_token_json:
                 print(f"Error verifying token: {exc}")
         return {}
 
     def logout(self):
+        keycloak_openid.logout(token['refresh_token'])
         self.id_token_json = ""
 
     @rx.var

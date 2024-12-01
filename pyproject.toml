@@ -12,6 +12,7 @@ reflex_counter = "reflex_counter.main:start"
 python = "^3.12"
 reflex = "*"
 fastapi = "*"
+python-keycloak = "^4.7.3"
 
 [build-system]
 requires = ["poetry-core"]
