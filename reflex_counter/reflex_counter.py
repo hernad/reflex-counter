@@ -5,8 +5,7 @@ import random
 import reflex as rx
 
 from .react_oidc_auth import AuthApp, AuthProvider
-
-# from .reflex_react_hello import Hello, HelloState
+from .reflex_react_hello import Hello, HelloState
 
 # https://reflex.dev/docs/wrapping-react/guide/#local-components
 
@@ -49,8 +48,9 @@ def index():
                 # Spline.create(
                 #    scene="https://prod.spline.design/joLpOOYbGL-10EJ4/scene.splinecode"
                 # ),
-                # Hello.create(user="hernad", on_change=HelloState.set_text),
-                rx.button(State.text, on_click=State.change_text),
+                rx.heading(HelloState.id_token_json),
+                Hello.create(user="hernad", on_success=HelloState.on_success),
+                # rx.button(State.text, on_click=State.change_text),
                 # rx.heading(State.count),
                 # rx.hstack(
                 #    rx.button(

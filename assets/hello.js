@@ -1,35 +1,40 @@
 // assets/hello.js
 import React from "react";
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 const Console = (prop) => (
   console[Object.keys(prop)[0]](...Object.values(prop)), null // ➜ React components must return something
 );
 
-export function Hello({ onChange, ...props }) {
-  const [count, setCount] = useState(10);
-  const [ival, setIval] = useState("hernad");
+export function Hello({ onSuccess, ...props }) {
+  const [count1, setCount1] = useState(10);
+  //const [ival, setIval] = useState("hernad");
 
-  function handleChange(e) {
-    setIval(e.target.value);
-  }
+  //function handleChange(e) {
+  //  setIval(e.target.value);
+  //}
   //const onChangeRef = useRef(onChange);
   //onChangeRef.current = onChange;
-  const increment = () => {
-    setCount((c) => {
+
+  const onSuccessHandler = onSuccess;
+
+  const incrementCount1 = () => {
+    setCount1((c) => {
+      //console.error("setCount1");
+      console.log("setCount1", c);
       c = c + 1;
+      onSuccessHandler({ value: c }, "test");
       return c;
     });
   };
 
   return (
     <div>
+      {console.log("start hello component")}
       <h3>Hello {props.user}!</h3>
       <div>
-        Count: {count}
-        <button onClick={increment}>[ + ]</button>
-        <input onChange={onChange} />
-        ival: {ival}
+        Count: {count1}
+        <button onClick={incrementCount1}>[ plus ]</button>
       </div>
     </div>
   );
