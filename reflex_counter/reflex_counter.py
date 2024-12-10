@@ -1,13 +1,22 @@
 """An simple example of a counter app using Reflex."""
 
-import reflex as rx
 import random
 
+import reflex as rx
+
+from .react_oidc_auth import AuthProvider, AuthApp
+
+
+
+# https://reflex.dev/docs/wrapping-react/guide/#local-components
 
 class State(rx.State):
     """The State defines reactive variables and the event handlers that can modify them."""
 
     count: int = 0
+
+    def on_redirect(self, id_token: dict):
+        print(id_token)
 
     def increment(self):
         """Increment the count."""
@@ -28,6 +37,9 @@ def index():
         rx.color_mode.button(position="top-right"),
         rx.card(
             rx.vstack(
+                # Spline.create(
+                #    scene="https://prod.spline.design/joLpOOYbGL-10EJ4/scene.splinecode"
+                # ),
                 rx.heading(State.count),
                 rx.hstack(
                     rx.button(
@@ -46,6 +58,14 @@ def index():
                         on_click=State.increment,
                         color_scheme="green",
                     ),
+                    AuthProvider.create(
+                        AuthApp.create(),
+                        authority="https://keycloak.cloud.out.ba/realms/bringout",
+                        client_id='reflex',
+                        client_secret='mQ02pwP7BXXgICx3Oc35fWKgnqWGZePb',
+                        redirect_uri='http://localhost:3000',
+                        scope='openid',
+                    )
                 ),
                 align="center",
             ),
